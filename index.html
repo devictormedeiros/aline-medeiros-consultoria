@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; overflow-x: hidden; }
+    ::selection { background: rgba(155,124,58,0.25); }
+  </style>
+</helmet>
+
+<div style="font-family: 'Inter', sans-serif; background: {{ colors.bg }}; color: {{ colors.text }}; -webkit-font-smoothing: antialiased;">
+
+  <!-- HERO -->
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: stretch;">
+    <div style="display: flex; flex-direction: column; justify-content: center; padding: clamp(64px, 14vw, 100px) 7vw; gap: clamp(20px, 3vw, 28px);">
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500;">ALINE MEDEIROS &mdash; CONSULTORIA DE IMAGEM</div>
+      <div style="width: 40px; height: 1px; background: {{ colors.text }}; opacity: 0.3;"></div>
+      <h1 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(34px, 3.6vw, 54px); line-height: 1.22; margin: 0; letter-spacing: -0.01em;">
+        A imagem não começa no vestir,<br><em style="font-style: italic; color: {{ colors.accent }};">ela começa no ser.</em>
+      </h1>
+      <p style="font-size: 17px; line-height: 1.7; max-width: 440px; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">
+        Consultoria de imagem para mulheres que já construíram algo &mdash; e querem que sua imagem diga isso antes da primeira palavra.
+      </p>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="display: inline-flex; width: fit-content; align-items: center; min-height: 20px; padding: 17px 34px; background: transparent; border: 1px solid {{ colors.text }}; color: {{ colors.text }}; text-decoration: none; font-size: 11px; letter-spacing: 0.16em; font-weight: 500; transition: border-color 0.3s, color 0.3s;" style-hover="border-color: {{ colors.accent }}; color: {{ colors.accent }};">CONVERSAR COM A ALINE</a>
+    </div>
+    <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; min-height: 380px; max-height: 86vh;">
+      <image-slot id="hero-photo" shape="rect" src="./assets/aline-hero.png" placeholder="Foto editorial de Aline em ambiente elegante"></image-slot>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(36px, 6vw, 80px);">
+    <div>
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 20px;">O PROBLEMA REAL</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0;">As pessoas decidem se vão confiar em você antes mesmo de ouvir sua voz.</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 8px;">
+      <p style="font-size: 16px; line-height: 1.8; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">O problema quase nunca é não saber se vestir. É a distância entre quem você é e como você é percebida &mdash; uma imagem que ainda fala do cargo anterior, do projeto passado, da mulher que você era há cinco anos.</p>
+      <p style="font-size: 16px; line-height: 1.8; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">Credibilidade não nasce da roupa. Mas uma imagem coerente faz sua competência ser reconhecida antes da primeira conversa. Imagem estratégica não é criar personagem &mdash; é reduzir essa distância.</p>
+    </div>
+  </section>
+
+  <!-- METODO -->
+  <section style="background: {{ colors.panel }}; padding: clamp(72px, 14vw, 140px) 7vw;">
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 20px;">O MÉTODO</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(28px, 2.8vw, 40px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 clamp(44px, 8vw, 72px); max-width: 640px;">Um processo de dentro para fora, em três movimentos.</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: clamp(36px, 6vw, 56px); margin-bottom: clamp(56px, 10vw, 88px);">
+        <sc-for list="{{ methodSteps }}" as="step" hint-placeholder-count="3">
+          <div>
+            <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: {{ colors.accent }}; margin-bottom: 20px;">{{ step.num }}</div>
+            <h3 style="font-size: 19px; font-weight: 500; margin: 0 0 14px;">{{ step.title }}</h3>
+            <p style="font-size: 15px; line-height: 1.75; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">{{ step.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <div style="width: 100%; max-width: 620px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 40px;">
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(19px, 1.8vw, 24px); line-height: 1.6; color: {{ colors.text }}; margin: 0;">O resultado não é um armário mais bonito. É uma mulher que se veste com intenção &mdash; com mais clareza, mais confiança, e uma imagem que comunica quem ela realmente é.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUE CONSULTORIA -->
+  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(40px, 6vw, 80px); align-items: center;">
+    <div style="aspect-ratio: 4/5; overflow: hidden; max-width: 460px; margin: 0 auto; width: 100%;">
+      <image-slot id="portrait-photo" shape="rect" src="./assets/aline-portrait.png" placeholder="Still dela em still de guarda-roupa"></image-slot>
+    </div>
+    <div>
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 20px;">COERÊNCIA, NÃO ESTILO</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 28px;">Nem toda roupa bonita é a roupa certa.</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <p style="font-size: 16px; line-height: 1.8; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">Estilo não é seguir tendência &mdash; é entender quem você é. Uma peça só funciona quando conversa com sua personalidade, seu estilo de vida e seus objetivos.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">O impacto está nos detalhes: modelagem, caimento, tecidos, proporções, acessórios. Elegância não é cor neutra &mdash; é harmonia e intenção.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: {{ colors.textMuted }}; margin: 0; font-weight: 300;">Por isso o trabalho começa no ser, nunca no vestir. Falar do guarda-roupa antes de entender como você se comunica e se posiciona é resolver o problema errado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA QUEM -->
+  <section style="background: {{ colors.panel }}; padding: clamp(72px, 14vw, 140px) 7vw;">
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(40px, 6vw, 80px); margin-bottom: clamp(56px, 10vw, 88px);">
+        <div>
+          <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 24px;">PARA QUEM É</div>
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <sc-for list="{{ forWhom }}" as="item" hint-placeholder-count="4">
+              <p style="font-size: 16px; line-height: 1.7; margin: 0; font-weight: 300; color: {{ colors.text }};">{{ item }}</p>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.textMuted }}; font-weight: 500; margin-bottom: 24px;">PARA QUEM NÃO É</div>
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <sc-for list="{{ notForWhom }}" as="item" hint-placeholder-count="3">
+              <p style="font-size: 16px; line-height: 1.7; margin: 0; font-weight: 300; color: {{ colors.textMuted }};">{{ item }}</p>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="width: 100%; aspect-ratio: 21/9; overflow: hidden;">
+        <image-slot id="wardrobe-photo" shape="rect" placeholder="Still de guarda-roupa organizado por cor"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROVA SOCIAL -->
+  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto;">
+    <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 20px; text-align: center;">CLIENTES</div>
+    <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 clamp(44px, 8vw, 72px); text-align: center;">O que dizem depois do processo</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(32px, 6vw, 48px);">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+        <div style="border-top: 1px solid rgba(0,0,0,0.12); padding-top: 28px;">
+          <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; margin: 0 0 20px; color: {{ colors.text }};">{{ t.quote }}</p>
+          <p style="font-size: 13px; letter-spacing: 0.04em; color: {{ colors.textMuted }}; margin: 0; font-weight: 400;">{{ t.attribution }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA FECHAMENTO -->
+  <section style="background: {{ colors.text }}; color: {{ colors.bg }}; padding: clamp(90px, 16vw, 160px) 7vw; text-align: center;">
+    <div style="max-width: 720px; margin: 0 auto;">
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: {{ colors.accent }}; font-weight: 500; margin-bottom: 24px;">PRÓXIMO PASSO</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.3; letter-spacing: -0.008em; margin: 0 0 28px;">Todo processo começa com uma conversa.</h2>
+      <p style="font-size: 16px; line-height: 1.8; color: rgba(250,248,244,0.7); margin: 0 0 44px; font-weight: 300;">O primeiro passo é uma conversa direta, sem compromisso, sobre como você enxerga sua imagem hoje. Conte um pouco sobre você &mdash; o resto a gente constrói juntas.</p>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; padding: 17px 38px; background: transparent; border: 1px solid rgba(250,248,244,0.5); color: {{ colors.bg }}; text-decoration: none; font-size: 11px; letter-spacing: 0.16em; font-weight: 500; transition: border-color 0.3s, color 0.3s;" style-hover="border-color: {{ colors.accent }}; color: {{ colors.accent }};">AGENDAR CONVERSA NO WHATSAPP</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding: 56px 7vw 96px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; max-width: 1280px; margin: 0 auto; border-top: 1px solid rgba(0,0,0,0.08);">
+    <div>
+      <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 6px;">Aline Medeiros</div>
+      <div style="font-size: 12px; letter-spacing: 0.08em; color: {{ colors.textMuted }};">CONSULTORIA DE IMAGEM</div>
+    </div>
+    <div style="font-size: 14px; line-height: 2; color: {{ colors.textMuted }}; font-weight: 300;">
+      <div>Atendimento presencial em [cidade] e online</div>
+      <div>[e-mail]</div>
+      <div><a href="{{ waHref }}" style="color: {{ colors.textMuted }};" style-hover="color: {{ colors.accent }};">WhatsApp</a></div>
+    </div>
+    <div style="font-size: 14px; line-height: 2; color: {{ colors.textMuted }}; font-weight: 300;">
+      <div><a href="#" style="color: {{ colors.textMuted }}; text-decoration: none;" style-hover="color: {{ colors.accent }};">Instagram</a></div>
+      <div style="margin-top: 16px; font-size: 12px;">&copy; 2026 Aline Medeiros. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- STICKY WHATSAPP -->
+  <a href="{{ waHref }}" target="_blank" rel="noopener" aria-label="Falar com Aline no WhatsApp" style="position: fixed; bottom: 24px; right: 24px; display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: {{ colors.bg }}; border: 1px solid {{ colors.text }}; color: {{ colors.text }}; text-decoration: none; z-index: 40; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: border-color 0.3s, color 0.3s;" style-hover="border-color: {{ colors.accent }}; color: {{ colors.accent }};">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink: 0;"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.35a9.96 9.96 0 0 0 4.91 1.29h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.15h-.01a8.15 8.15 0 0 1-4.15-1.14l-.3-.18-3.05.8.82-2.97-.2-.31a8.14 8.14 0 0 1-1.25-4.35c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 0 1 2.39 5.78c0 4.5-3.67 8.14-8.18 8.14zm4.47-6.1c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.97-.14.16-.28.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.35-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14-.01-.3-.01-.46-.01s-.42.06-.64.3c-.22.24-.85.83-.85 2.02s.87 2.35 1 2.51c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+  </a>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900},
+  &quot;accent&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;gold&quot;, &quot;options&quot;: [&quot;gold&quot;, &quot;wine&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Marca&quot;},
+  &quot;whatsappNumber&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;5511999999999&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Contato&quot;},
+  &quot;whatsappMessage&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Olá Aline, gostaria de saber mais sobre a consultoria de imagem.&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Contato&quot;}
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent === 'wine' ? 'oklch(42% 0.09 20)' : 'oklch(58% 0.08 75)';
+    const colors = {
+      bg: 'oklch(98% 0.006 80)',
+      panel: 'oklch(95.5% 0.012 75)',
+      text: 'oklch(20% 0.006 80)',
+      textMuted: 'oklch(45% 0.01 75)',
+      accent
+    };
+    const number = (this.props.whatsappNumber || '5511999999999').replace(/\D/g, '');
+    const message = this.props.whatsappMessage || 'Olá Aline, gostaria de saber mais sobre a consultoria de imagem.';
+    const waHref = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+
+    return {
+      colors,
+      waHref,
+      methodSteps: [
+        { num: '01', title: 'Entender a mulher por trás', body: 'Rotina, profissão, objetivos, desafios — e como ela quer ser percebida. Nada é definido antes disso.' },
+        { num: '02', title: 'Estilo, cores e peças', body: 'A partir de quem ela é, definimos o estilo que a fortalece, as cores que sustentam essa imagem e as peças que fazem sentido pra vida real dela.' },
+        { num: '03', title: 'Guarda-roupa estratégico', body: 'Só então olhamos o armário: o que falta, o que sai, e as combinações que resolvem seus dias com intenção.' }
+      ],
+      forWhom: [
+        'Mulheres que já construíram algo — uma carreira, um negócio, uma reputação — e sentem que a imagem ainda não acompanha essa trajetória.',
+        'Mulheres em transição: um novo momento, um novo patamar, uma fase que pede uma imagem à altura.',
+        'Mulheres que lideram, decidem ou representam algo maior que elas — a própria marca ou a de outra pessoa.',
+        'Mulheres que já sabem quem são e querem que isso apareça antes da primeira palavra.'
+      ],
+      notForWhom: [
+        'Para quem busca uma fórmula pronta ou um "guia de looks".',
+        'Para quem quer apenas seguir a próxima tendência.',
+        'Para quem não está disposta a olhar para dentro antes de olhar para o armário.'
+      ],
+      testimonials: [
+        { quote: '[inserir depoimento — nome, profissão, resultado]', attribution: '[NOME · PROFISSÃO]' },
+        { quote: '[inserir depoimento — nome, profissão, resultado]', attribution: '[NOME · PROFISSÃO]' },
+        { quote: '[inserir depoimento — nome, profissão, resultado]', attribution: '[NOME · PROFISSÃO]' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
