@@ -48,6 +48,89 @@
     transition: border-color 0.3s, color 0.3s, transform 0.3s;
   }
   .wa-sticky:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* ---------- FORMULÁRIO INTERATIVO EM ETAPAS ---------- */
+  .form-wrap { max-width: 640px; margin: 0 auto; }
+  .form-card {
+    background: rgba(250,248,244,0.04);
+    border: 1px solid rgba(250,248,244,0.14);
+    border-radius: 20px;
+    padding: clamp(28px, 5vw, 48px);
+    backdrop-filter: blur(6px);
+  }
+  .form-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .form-step-count {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.12em; color: rgba(250,248,244,0.55);
+  }
+  .form-step-count b { color: var(--accent); }
+  .form-progress { flex: 1; height: 2px; margin-left: 20px; background: rgba(250,248,244,0.14); border-radius: 2px; overflow: hidden; }
+  .form-progress-bar { height: 100%; width: 20%; background: var(--accent); border-radius: 2px; transition: width 0.45s cubic-bezier(0.4,0,0.2,1); }
+
+  .form-step { display: none; animation: stepIn 0.45s cubic-bezier(0.16,1,0.3,1); }
+  .form-step.active { display: block; }
+  @keyframes stepIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .form-q {
+    font-family: 'Playfair Display', serif; font-weight: 400;
+    font-size: clamp(22px, 2.4vw, 30px); line-height: 1.3; color: var(--bg);
+    margin: 0 0 8px;
+  }
+  .form-help { font-size: 14px; color: rgba(250,248,244,0.55); margin: 0 0 26px; font-weight: 300; }
+
+  .form-options { display: grid; gap: 12px; }
+  .opt {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 20px; border-radius: 12px;
+    border: 1px solid rgba(250,248,244,0.16); background: rgba(250,248,244,0.02);
+    color: var(--bg); font-size: 15px; text-align: left; cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, transform 0.15s;
+    font-weight: 300;
+  }
+  .opt:hover { border-color: rgba(250,248,244,0.4); background: rgba(250,248,244,0.05); }
+  .opt.selected { border-color: var(--accent); background: rgba(155,124,58,0.14); }
+  .opt-dot {
+    width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%;
+    border: 1px solid rgba(250,248,244,0.4); position: relative; transition: border-color 0.25s;
+  }
+  .opt.selected .opt-dot { border-color: var(--accent); }
+  .opt.selected .opt-dot::after {
+    content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--accent);
+  }
+
+  .form-field { display: block; }
+  .form-input, .form-textarea {
+    width: 100%; padding: 16px 18px; border-radius: 12px;
+    border: 1px solid rgba(250,248,244,0.16); background: rgba(250,248,244,0.03);
+    color: var(--bg); font-size: 16px; font-family: inherit; font-weight: 300;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .form-textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(250,248,244,0.35); }
+  .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); background: rgba(250,248,244,0.06); }
+
+  .form-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 30px; }
+  .form-btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 30px; border-radius: 999px;
+    font-size: 12px; letter-spacing: 0.14em; font-weight: 500; cursor: pointer; border: 1px solid transparent;
+    transition: opacity 0.25s, background 0.25s, transform 0.15s, border-color 0.25s;
+  }
+  .form-btn--primary { background: var(--accent); color: #fff; border: none; }
+  .form-btn--primary:hover { transform: translateY(-1px); }
+  .form-btn--primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .form-btn--ghost { background: transparent; color: rgba(250,248,244,0.7); border-color: rgba(250,248,244,0.2); }
+  .form-btn--ghost:hover { color: var(--bg); border-color: rgba(250,248,244,0.5); }
+  .form-btn--hidden { visibility: hidden; }
+
+  /* Tela de sucesso */
+  .form-success { display: none; text-align: center; padding: 20px 0; animation: stepIn 0.5s cubic-bezier(0.16,1,0.3,1); }
+  .form-success.active { display: block; }
+  .form-check {
+    width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 50%;
+    border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; color: var(--accent);
+  }
+  .review-line { font-size: 14px; color: rgba(250,248,244,0.7); line-height: 1.9; font-weight: 300; }
+  .review-line b { color: var(--bg); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -171,13 +254,96 @@
     </div>
   </section>
 
-  <!-- CTA FECHAMENTO -->
-  <section style="background: var(--text); color: var(--bg); padding: clamp(90px, 16vw, 160px) 7vw; text-align: center;">
-    <div style="max-width: 720px; margin: 0 auto;">
+  <!-- FORMULÁRIO INTERATIVO -->
+  <section id="form" style="background: linear-gradient(180deg, oklch(26% 0.03 55) 0%, oklch(21% 0.025 50) 100%); color: var(--bg); padding: clamp(90px, 16vw, 150px) 7vw;">
+    <div style="max-width: 720px; margin: 0 auto 44px; text-align: center;">
       <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 24px;">PRÓXIMO PASSO</div>
-      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.3; letter-spacing: -0.008em; margin: 0 0 28px;">Todo processo começa com uma conversa.</h2>
-      <p style="font-size: 16px; line-height: 1.8; color: rgba(250,248,244,0.7); margin: 0 0 44px; font-weight: 300;">O primeiro passo é uma conversa direta, sem compromisso, sobre como você enxerga sua imagem hoje. Conte um pouco sobre você &mdash; o resto a gente constrói juntas.</p>
-      <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" class="btn btn--onDark" style="margin: 0 auto;">AGENDAR CONVERSA NO WHATSAPP</a>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.3; letter-spacing: -0.008em; margin: 0 0 20px;">Todo processo começa com uma conversa.</h2>
+      <p style="font-size: 16px; line-height: 1.8; color: rgba(250,248,244,0.7); margin: 0; font-weight: 300;">Responda algumas perguntas rápidas &mdash; leva menos de um minuto e ajuda a Aline a entender seu momento antes da primeira conversa.</p>
+    </div>
+
+    <div class="form-wrap">
+      <div class="form-card">
+        <!-- topo: progresso -->
+        <div class="form-topbar" id="form-topbar">
+          <div class="form-step-count"><b id="step-now">01</b> / <span id="step-total">05</span></div>
+          <div class="form-progress"><div class="form-progress-bar" id="progress-bar"></div></div>
+        </div>
+
+        <form id="lead-form" novalidate>
+          <!-- Etapa 1: Nome -->
+          <div class="form-step active" data-step="1">
+            <h3 class="form-q">Como você se chama?</h3>
+            <p class="form-help">Vamos começar pelo básico.</p>
+            <label class="form-field">
+              <input type="text" class="form-input" name="nome" placeholder="Seu nome" autocomplete="name" required>
+            </label>
+          </div>
+
+          <!-- Etapa 2: Momento -->
+          <div class="form-step" data-step="2">
+            <h3 class="form-q">Qual seu momento agora?</h3>
+            <p class="form-help">Escolha o que mais se aproxima.</p>
+            <div class="form-options" data-choice="momento">
+              <button type="button" class="opt"><span class="opt-dot"></span>Transição de carreira ou de vida</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Alcancei um novo patamar profissional</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Quero mais coerência na minha imagem</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Um evento ou fase específica</button>
+            </div>
+          </div>
+
+          <!-- Etapa 3: Dor -->
+          <div class="form-step" data-step="3">
+            <h3 class="form-q">O que mais pesa hoje?</h3>
+            <p class="form-help">O que te trouxe até aqui.</p>
+            <div class="form-options" data-choice="dor">
+              <button type="button" class="opt"><span class="opt-dot"></span>Minha imagem não reflete quem eu sou</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Insegurança na hora de me vestir</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Guarda-roupa cheio, mas sem direção</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Quero comunicar mais autoridade</button>
+            </div>
+          </div>
+
+          <!-- Etapa 4: Preferência -->
+          <div class="form-step" data-step="4">
+            <h3 class="form-q">Como prefere o atendimento?</h3>
+            <p class="form-help">Aline atende presencial e online.</p>
+            <div class="form-options" data-choice="atendimento">
+              <button type="button" class="opt"><span class="opt-dot"></span>Presencial</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Online</button>
+              <button type="button" class="opt"><span class="opt-dot"></span>Tanto faz</button>
+            </div>
+          </div>
+
+          <!-- Etapa 5: Contato -->
+          <div class="form-step" data-step="5">
+            <h3 class="form-q">Por onde a Aline te encontra?</h3>
+            <p class="form-help">Deixe seu melhor contato e, se quiser, um recado.</p>
+            <label class="form-field" style="margin-bottom:12px;">
+              <input type="text" class="form-input" name="contato" placeholder="WhatsApp ou e-mail" required>
+            </label>
+            <label class="form-field">
+              <textarea class="form-textarea" name="mensagem" placeholder="Quer contar mais alguma coisa? (opcional)"></textarea>
+            </label>
+          </div>
+
+          <!-- navegação -->
+          <div class="form-nav">
+            <button type="button" class="form-btn form-btn--ghost form-btn--hidden" id="btn-back">Voltar</button>
+            <button type="button" class="form-btn form-btn--primary" id="btn-next" disabled>Continuar</button>
+          </div>
+        </form>
+
+        <!-- sucesso -->
+        <div class="form-success" id="form-success">
+          <div class="form-check">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3 class="form-q" style="margin-bottom:14px;">Recebido, <span id="success-name">tudo certo</span>!</h3>
+          <p class="form-help" style="margin-bottom:26px;">Suas respostas foram registradas. Em breve a Aline entra em contato para dar o próximo passo.</p>
+          <div class="review-line" id="review"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -202,6 +368,103 @@
   <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" aria-label="Falar com Aline no WhatsApp" class="wa-sticky">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink: 0;"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.35a9.96 9.96 0 0 0 4.91 1.29h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.15h-.01a8.15 8.15 0 0 1-4.15-1.14l-.3-.18-3.05.8.82-2.97-.2-.31a8.14 8.14 0 0 1-1.25-4.35c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 0 1 2.39 5.78c0 4.5-3.67 8.14-8.18 8.14zm4.47-6.1c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.97-.14.16-.28.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.35-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14-.01-.3-.01-.46-.01s-.42.06-.64.3c-.22.24-.85.83-.85 2.02s.87 2.35 1 2.51c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
   </a>
+
+  <script>
+  (function () {
+    var form = document.getElementById('lead-form');
+    if (!form) return;
+
+    var steps = Array.prototype.slice.call(form.querySelectorAll('.form-step'));
+    var total = steps.length;
+    var current = 0;
+    var data = {};
+
+    var btnNext = document.getElementById('btn-next');
+    var btnBack = document.getElementById('btn-back');
+    var bar = document.getElementById('progress-bar');
+    var stepNow = document.getElementById('step-now');
+    document.getElementById('step-total').textContent = String(total).padStart(2, '0');
+    var success = document.getElementById('form-success');
+    var topbar = document.getElementById('form-topbar');
+
+    var LABELS = { momento: 'Momento', dor: 'O que pesa', atendimento: 'Atendimento', contato: 'Contato', mensagem: 'Recado' };
+
+    function stepIsValid(i) {
+      var step = steps[i];
+      var choice = step.querySelector('.form-options');
+      if (choice) return !!data[choice.getAttribute('data-choice')];
+      var req = step.querySelector('[required]');
+      return req ? req.value.trim().length > 0 : true;
+    }
+
+    function render() {
+      steps.forEach(function (s, i) { s.classList.toggle('active', i === current); });
+      bar.style.width = ((current + 1) / total * 100) + '%';
+      stepNow.textContent = String(current + 1).padStart(2, '0');
+      btnBack.classList.toggle('form-btn--hidden', current === 0);
+      btnNext.textContent = current === total - 1 ? 'Enviar' : 'Continuar';
+      btnNext.disabled = !stepIsValid(current);
+      var input = steps[current].querySelector('input, textarea');
+      if (input) setTimeout(function () { input.focus(); }, 60);
+    }
+
+    // seleção de cards
+    form.querySelectorAll('.form-options').forEach(function (group) {
+      var key = group.getAttribute('data-choice');
+      group.querySelectorAll('.opt').forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          group.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('selected'); });
+          opt.classList.add('selected');
+          data[key] = opt.textContent.trim();
+          btnNext.disabled = false;
+          setTimeout(next, 260); // auto-avança
+        });
+      });
+    });
+
+    // inputs de texto habilitam o botão
+    form.querySelectorAll('input, textarea').forEach(function (el) {
+      el.addEventListener('input', function () { btnNext.disabled = !stepIsValid(current); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') { e.preventDefault(); if (!btnNext.disabled) next(); }
+      });
+    });
+
+    function collectText() {
+      var step = steps[current];
+      step.querySelectorAll('input, textarea').forEach(function (el) {
+        if (el.name) data[el.name] = el.value.trim();
+      });
+    }
+
+    function next() {
+      if (!stepIsValid(current)) return;
+      collectText();
+      if (current < total - 1) { current++; render(); }
+      else submit();
+    }
+
+    function back() { if (current > 0) { current--; render(); } }
+
+    function submit() {
+      // Envio fictício por enquanto — próximo passo: conectar WhatsApp/e-mail/backend.
+      form.style.display = 'none';
+      topbar.style.display = 'none';
+      document.getElementById('success-name').textContent = data.nome || 'tudo certo';
+      var order = ['momento', 'dor', 'atendimento', 'contato', 'mensagem'];
+      var html = order.filter(function (k) { return data[k]; }).map(function (k) {
+        return '<div><b>' + LABELS[k] + ':</b> ' + data[k].replace(/</g, '&lt;') + '</div>';
+      }).join('');
+      document.getElementById('review').innerHTML = html;
+      success.classList.add('active');
+      console.log('[lead-form] envio fictício — dados coletados:', data);
+    }
+
+    btnNext.addEventListener('click', next);
+    btnBack.addEventListener('click', back);
+    render();
+  })();
+  </script>
 
 </body>
 </html>
