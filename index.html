@@ -177,6 +177,11 @@
   }
   .review-line { font-size: 14px; color: rgba(250,248,244,0.7); line-height: 1.9; font-weight: 300; }
   .review-line b { color: var(--bg); font-weight: 500; }
+
+  .form-hint { font-size: 13px; color: rgba(220,160,120,0.9); margin: 8px 2px 0; font-weight: 300; display: none; }
+  .form-hint.show { display: block; }
+  .form-error { font-size: 13px; color: #e6a08a; margin: 0 0 16px; font-weight: 400; display: none; }
+  .form-error.show { display: block; }
 </style>
 </head>
 <body>
@@ -313,16 +318,18 @@
         <!-- topo: progresso -->
         <div class="form-topbar" id="form-topbar">
           <div class="form-step-count"><b id="step-now">01</b> / <span id="step-total">05</span></div>
-          <div class="form-progress"><div class="form-progress-bar" id="progress-bar"></div></div>
+          <div class="form-progress" role="progressbar" aria-label="Progresso do formulário" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1" id="progress-wrap"><div class="form-progress-bar" id="progress-bar"></div></div>
         </div>
 
         <form id="lead-form" novalidate>
+          <!-- honeypot anti-spam (invisível a humanos) -->
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
           <!-- Etapa 1: Nome -->
           <div class="form-step active" data-step="1">
             <h3 class="form-q">Como você se chama?</h3>
             <p class="form-help">Vamos começar pelo básico.</p>
             <label class="form-field">
-              <input type="text" class="form-input" name="nome" placeholder="Seu nome" autocomplete="name" required>
+              <input type="text" class="form-input" name="nome" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome" required>
             </label>
           </div>
 
@@ -366,14 +373,16 @@
             <h3 class="form-q">Por onde a Aline te encontra?</h3>
             <p class="form-help">Deixe seu melhor contato e, se quiser, um recado.</p>
             <label class="form-field" style="margin-bottom:12px;">
-              <input type="text" class="form-input" name="contato" placeholder="WhatsApp ou e-mail" required>
+              <input type="text" class="form-input" name="contato" placeholder="WhatsApp ou e-mail" autocomplete="on" aria-label="Seu WhatsApp ou e-mail" required>
             </label>
+            <p class="form-hint" id="contato-hint">Informe um e-mail válido ou um telefone com DDD.</p>
             <label class="form-field">
-              <textarea class="form-textarea" name="mensagem" placeholder="Quer contar mais alguma coisa? (opcional)"></textarea>
+              <textarea class="form-textarea" name="mensagem" placeholder="Quer contar mais alguma coisa? (opcional)" aria-label="Recado (opcional)"></textarea>
             </label>
           </div>
 
           <!-- navegação -->
+          <p class="form-error" id="form-error" role="alert">Não consegui enviar agora. Tente novamente ou fale direto no WhatsApp.</p>
           <div class="form-nav">
             <button type="button" class="form-btn form-btn--ghost form-btn--hidden" id="btn-back">Voltar</button>
             <button type="button" class="form-btn form-btn--primary" id="btn-next" disabled>Continuar</button>
@@ -381,7 +390,7 @@
         </form>
 
         <!-- sucesso -->
-        <div class="form-success" id="form-success">
+        <div class="form-success" id="form-success" role="status" aria-live="polite">
           <div class="form-check">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
@@ -425,31 +434,49 @@
     var current = 0;
     var data = {};
 
+    var ENDPOINT = 'https://api.web3forms.com/submit';
+    var ACCESS_KEY = '446ec470-46ab-4858-bb23-19ba7763eeb5';
+
     var btnNext = document.getElementById('btn-next');
     var btnBack = document.getElementById('btn-back');
     var bar = document.getElementById('progress-bar');
+    var progressWrap = document.getElementById('progress-wrap');
     var stepNow = document.getElementById('step-now');
     document.getElementById('step-total').textContent = String(total).padStart(2, '0');
     var success = document.getElementById('form-success');
     var topbar = document.getElementById('form-topbar');
+    var errorBox = document.getElementById('form-error');
+    var contatoHint = document.getElementById('contato-hint');
+    var sending = false;
 
     var LABELS = { momento: 'Momento', dor: 'O que pesa', atendimento: 'Atendimento', contato: 'Contato', mensagem: 'Recado' };
+
+    function isValidContato(v) {
+      v = (v || '').trim();
+      var email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var digits = v.replace(/\D/g, '');
+      return email.test(v) || digits.length >= 8; // e-mail OU telefone plausível
+    }
 
     function stepIsValid(i) {
       var step = steps[i];
       var choice = step.querySelector('.form-options');
       if (choice) return !!data[choice.getAttribute('data-choice')];
       var req = step.querySelector('[required]');
-      return req ? req.value.trim().length > 0 : true;
+      if (!req) return true;
+      if (req.name === 'contato') return isValidContato(req.value);
+      return req.value.trim().length > 0;
     }
 
     function render(focusInput) {
       steps.forEach(function (s, i) { s.classList.toggle('active', i === current); });
       bar.style.width = ((current + 1) / total * 100) + '%';
       stepNow.textContent = String(current + 1).padStart(2, '0');
+      if (progressWrap) progressWrap.setAttribute('aria-valuenow', current + 1);
       btnBack.classList.toggle('form-btn--hidden', current === 0);
       btnNext.textContent = current === total - 1 ? 'Enviar' : 'Continuar';
       btnNext.disabled = !stepIsValid(current);
+      errorBox.classList.remove('show');
       if (focusInput) {
         var input = steps[current].querySelector('input, textarea');
         if (input) setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }, 60);
@@ -472,7 +499,13 @@
 
     // inputs de texto habilitam o botão
     form.querySelectorAll('input, textarea').forEach(function (el) {
-      el.addEventListener('input', function () { btnNext.disabled = !stepIsValid(current); });
+      el.addEventListener('input', function () {
+        btnNext.disabled = !stepIsValid(current);
+        if (el.name === 'contato') {
+          var v = el.value.trim();
+          contatoHint.classList.toggle('show', v.length > 0 && !isValidContato(v));
+        }
+      });
       el.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') { e.preventDefault(); if (!btnNext.disabled) next(); }
       });
@@ -494,18 +527,72 @@
 
     function back() { if (current > 0) { current--; render(true); } }
 
-    function submit() {
-      // Envio fictício por enquanto — próximo passo: conectar WhatsApp/e-mail/backend.
+    function setSending(on) {
+      sending = on;
+      btnNext.disabled = on;
+      btnBack.style.visibility = on ? 'hidden' : '';
+      btnNext.textContent = on ? 'Enviando…' : 'Enviar';
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; });
+    }
+
+    function showSuccess() {
       form.style.display = 'none';
       topbar.style.display = 'none';
       document.getElementById('success-name').textContent = data.nome || 'tudo certo';
       var order = ['momento', 'dor', 'atendimento', 'contato', 'mensagem'];
       var html = order.filter(function (k) { return data[k]; }).map(function (k) {
-        return '<div><b>' + LABELS[k] + ':</b> ' + data[k].replace(/</g, '&lt;') + '</div>';
+        return '<div><b>' + LABELS[k] + ':</b> ' + esc(data[k]) + '</div>';
       }).join('');
       document.getElementById('review').innerHTML = html;
       success.classList.add('active');
-      console.log('[lead-form] envio fictício — dados coletados:', data);
+    }
+
+    function submit() {
+      if (sending) return;
+      collectText();
+
+      // honeypot preenchido = robô: finge sucesso e não envia
+      var hp = form.querySelector('[name="_hp"]');
+      if (hp && hp.value) { showSuccess(); return; }
+
+      if (!isValidContato(data.contato || '')) {
+        current = total - 1; render(true);
+        contatoHint.classList.add('show');
+        return;
+      }
+
+      errorBox.classList.remove('show');
+      setSending(true);
+
+      var payload = {
+        access_key: ACCESS_KEY,
+        subject: 'Novo lead do site — ' + (data.nome || 'sem nome'),
+        from_name: 'Site Aline Medeiros',
+        nome: data.nome || '',
+        momento: data.momento || '',
+        o_que_pesa: data.dor || '',
+        atendimento: data.atendimento || '',
+        contato: data.contato || '',
+        mensagem: data.mensagem || '(sem recado)'
+      };
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (out) {
+          if (out && out.success) { showSuccess(); }
+          else { throw new Error((out && out.message) || 'Falha no envio'); }
+        })
+        .catch(function () {
+          setSending(false);
+          errorBox.classList.add('show');
+        });
     }
 
     btnNext.addEventListener('click', next);
