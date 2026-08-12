@@ -38,6 +38,7 @@
     --accent: oklch(58% 0.08 75);
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { max-width: 100%; overflow-x: hidden; }
   body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
   img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -65,12 +66,82 @@
     cursor: pointer;
   }
   .btn:hover { border-color: var(--accent); color: var(--accent); }
+  @media (max-width: 600px) {
+    .btn { padding: 14px 22px; font-size: 10px; letter-spacing: 0.10em; line-height: 1.5; text-align: center; }
+    .btn--light { width: 100%; justify-content: center; }
+  }
 
   .btn--onDark { border-color: rgba(250,248,244,0.5); color: var(--bg); padding: 17px 38px; }
   .btn--onDark:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* CTA sólido claro (sobre fundo escuro) */
+  .btn--light {
+    background: var(--bg); border-color: var(--bg); color: oklch(24% 0.028 55);
+    padding: 18px 40px; box-shadow: 0 10px 30px -12px rgba(0,0,0,0.6);
+  }
+  .btn--light:hover { background: #fff; border-color: #fff; color: var(--accent); transform: translateY(-1px); }
+
   .link-muted { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
   .link-muted:hover { color: var(--accent); }
+
+  /* Links do rodapé com ícone */
+  .foot-link {
+    display: inline-flex; align-items: center; gap: 11px;
+    color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 300;
+    transition: color 0.3s;
+  }
+  .foot-link svg { flex-shrink: 0; opacity: 0.85; transition: opacity 0.3s; }
+  .foot-link:hover { color: var(--accent); }
+  .foot-link:hover svg { opacity: 1; }
+
+  /* ---------- PLANOS / EXPERIÊNCIAS ---------- */
+  .plans-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: clamp(20px, 2.5vw, 28px); align-items: stretch;
+  }
+  .plan {
+    display: flex; flex-direction: column;
+    background: linear-gradient(180deg, rgba(255,250,242,0.06) 0%, rgba(255,250,242,0.03) 100%);
+    border: 1px solid rgba(250,248,244,0.16); border-radius: 18px;
+    padding: clamp(26px, 3vw, 34px);
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+  .plan:hover { border-color: var(--accent); box-shadow: 0 22px 50px -24px rgba(0,0,0,0.6); transform: translateY(-3px); }
+  .plan-tag {
+    align-self: flex-end; margin-bottom: 14px;
+    display: inline-flex; align-items: center;
+    padding: 5px 13px; border-radius: 999px;
+    background: rgba(250,248,244,0.95); color: oklch(24% 0.028 55);
+    font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600;
+  }
+  .plan-title { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--bg); }
+  .plan-title span { color: var(--accent); font-weight: 600; }
+  .plan-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: rgba(250,248,244,0.92); margin: 0 0 18px; }
+  .plan-desc { font-size: 15px; line-height: 1.7; color: rgba(250,248,244,0.6); margin: 0 0 18px; font-weight: 300; }
+  .plan-incl { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,248,244,0.92); font-weight: 600; margin: 0 0 12px; }
+  .plan-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+  .plan-list li { position: relative; padding-left: 20px; font-size: 14.5px; line-height: 1.55; color: rgba(250,248,244,0.85); font-weight: 300; }
+  .plan-list li::before { content: ''; position: absolute; left: 2px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- FAQ ACCORDION ---------- */
+  .faq-item { border-bottom: 1px solid rgba(0,0,0,0.12); }
+  .faq-item summary {
+    list-style: none; cursor: pointer; padding: 26px 44px 26px 0; position: relative;
+    font-family: 'Playfair Display', serif; font-size: clamp(18px, 1.8vw, 21px);
+    line-height: 1.4; color: var(--text); transition: color 0.25s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--accent); }
+  .faq-item summary::after {
+    content: ''; position: absolute; right: 6px; top: 50%; width: 13px; height: 13px;
+    margin-top: -7px; border-right: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent);
+    transform: rotate(45deg); transition: transform 0.3s;
+  }
+  .faq-item[open] summary::after { transform: rotate(-135deg); }
+  .faq-answer { padding: 0 44px 28px 0; }
+  .faq-answer p { font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300; }
+  .faq-item[open] .faq-answer { animation: faqIn 0.35s ease; }
+  @keyframes faqIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
   /* Sticky WhatsApp */
   .wa-sticky {
@@ -82,106 +153,6 @@
     transition: border-color 0.3s, color 0.3s, transform 0.3s;
   }
   .wa-sticky:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
-  /* ---------- FORMULÁRIO INTERATIVO EM ETAPAS ---------- */
-  .form-wrap { max-width: 640px; margin: 0 auto; position: relative; }
-  .form-card {
-    position: relative; z-index: 1;
-    background: linear-gradient(180deg, rgba(255,250,242,0.10) 0%, rgba(255,250,242,0.055) 100%);
-    border: 1px solid rgba(250,248,244,0.22);
-    border-radius: 20px;
-    padding: clamp(28px, 5vw, 48px);
-    backdrop-filter: blur(10px);
-    box-shadow:
-      0 24px 60px -18px rgba(0,0,0,0.60),
-      0 4px 16px rgba(0,0,0,0.30),
-      0 0 40px -6px rgba(184,146,74,0.22),
-      inset 0 1px 0 rgba(255,255,255,0.06);
-  }
-  /* fio dourado no topo */
-  .form-card::before {
-    content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 2px; border-radius: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.8;
-  }
-  .form-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-  .form-step-count {
-    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
-    font-size: 12px; letter-spacing: 0.12em; color: rgba(250,248,244,0.55);
-  }
-  .form-step-count b { color: var(--accent); }
-  .form-progress { flex: 1; height: 2px; margin-left: 20px; background: rgba(250,248,244,0.14); border-radius: 2px; overflow: hidden; }
-  .form-progress-bar { height: 100%; width: 20%; background: var(--accent); border-radius: 2px; transition: width 0.45s cubic-bezier(0.4,0,0.2,1); }
-
-  .form-step { display: none; animation: stepIn 0.45s cubic-bezier(0.16,1,0.3,1); }
-  .form-step.active { display: block; }
-  @keyframes stepIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-
-  .form-q {
-    font-family: 'Playfair Display', serif; font-weight: 400;
-    font-size: clamp(22px, 2.4vw, 30px); line-height: 1.3; color: var(--bg);
-    margin: 0 0 8px;
-  }
-  .form-help { font-size: 14px; color: rgba(250,248,244,0.55); margin: 0 0 26px; font-weight: 300; }
-
-  .form-options { display: grid; gap: 12px; }
-  .opt {
-    display: flex; align-items: center; gap: 14px;
-    padding: 18px 20px; border-radius: 12px;
-    border: 1px solid rgba(250,248,244,0.22); background: rgba(255,250,242,0.05);
-    color: var(--bg); font-size: 15px; text-align: left; cursor: pointer;
-    transition: border-color 0.25s, background 0.25s, transform 0.15s, box-shadow 0.25s;
-    font-weight: 300;
-  }
-  .opt:hover { border-color: rgba(250,248,244,0.55); background: rgba(255,250,242,0.09); transform: translateX(3px); }
-  .opt.selected { border-color: var(--accent); background: rgba(184,146,74,0.20); box-shadow: 0 0 0 1px var(--accent), 0 6px 18px -6px rgba(184,146,74,0.5); }
-  .opt-dot {
-    width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%;
-    border: 1px solid rgba(250,248,244,0.4); position: relative; transition: border-color 0.25s;
-  }
-  .opt.selected .opt-dot { border-color: var(--accent); }
-  .opt.selected .opt-dot::after {
-    content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--accent);
-  }
-
-  .form-field { display: block; }
-  .form-input, .form-textarea {
-    width: 100%; padding: 16px 18px; border-radius: 12px;
-    border: 1px solid rgba(250,248,244,0.22); background: rgba(255,250,242,0.05);
-    color: var(--bg); font-size: 16px; font-family: inherit; font-weight: 300;
-    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
-  }
-  .form-textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
-  .form-input::placeholder, .form-textarea::placeholder { color: rgba(250,248,244,0.35); }
-  .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); background: rgba(255,250,242,0.08); box-shadow: 0 0 0 3px rgba(184,146,74,0.18); }
-
-  .form-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 30px; }
-  .form-btn {
-    display: inline-flex; align-items: center; gap: 8px; padding: 14px 30px; border-radius: 999px;
-    font-size: 12px; letter-spacing: 0.14em; font-weight: 500; cursor: pointer; border: 1px solid transparent;
-    transition: opacity 0.25s, background 0.25s, transform 0.15s, border-color 0.25s;
-  }
-  .form-btn--primary { background: var(--accent); color: #fff; border: none; }
-  .form-btn--primary:hover { transform: translateY(-1px); }
-  .form-btn--primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-  .form-btn--ghost { background: transparent; color: rgba(250,248,244,0.7); border-color: rgba(250,248,244,0.2); }
-  .form-btn--ghost:hover { color: var(--bg); border-color: rgba(250,248,244,0.5); }
-  .form-btn--hidden { visibility: hidden; }
-
-  /* Tela de sucesso */
-  .form-success { display: none; text-align: center; padding: 20px 0; animation: stepIn 0.5s cubic-bezier(0.16,1,0.3,1); }
-  .form-success.active { display: block; }
-  .form-check {
-    width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 50%;
-    border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; color: var(--accent);
-  }
-  .review-line { font-size: 14px; color: rgba(250,248,244,0.7); line-height: 1.9; font-weight: 300; }
-  .review-line b { color: var(--bg); font-weight: 500; }
-
-  .form-hint { font-size: 13px; color: rgba(220,160,120,0.9); margin: 8px 2px 0; font-weight: 300; display: none; }
-  .form-hint.show { display: block; }
-  .form-error { font-size: 13px; color: #e6a08a; margin: 0 0 16px; font-weight: 400; display: none; }
-  .form-error.show { display: block; }
 </style>
 </head>
 <body>
@@ -197,7 +168,7 @@
       <p style="font-size: 17px; line-height: 1.7; max-width: 440px; color: var(--text-muted); margin: 0; font-weight: 300;">
         Consultoria de imagem para mulheres que já construíram algo &mdash; e querem que sua imagem diga isso antes da primeira palavra.
       </p>
-      <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" class="btn">CONVERSAR COM A ALINE</a>
+      <a href="#experiencias" class="btn">QUERO CONHECER AS EXPERIÊNCIAS DE CONSULTORIA</a>
     </div>
     <div style="position: relative; overflow: hidden; aspect-ratio: 3/4; min-height: 380px; max-height: 86vh;">
       <img src="./assets/aline-hero.png" alt="Foto editorial de Aline em ambiente elegante">
@@ -213,6 +184,22 @@
     <div style="display: flex; flex-direction: column; gap: 24px; padding-top: 8px;">
       <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">O problema quase nunca é não saber se vestir. É a distância entre quem você é e como você é percebida &mdash; uma imagem que ainda fala do cargo anterior, do projeto passado, da mulher que você era há cinco anos.</p>
       <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Credibilidade não nasce da roupa. Mas uma imagem coerente faz sua competência ser reconhecida antes da primeira conversa. Imagem estratégica não é criar personagem &mdash; é reduzir essa distância.</p>
+    </div>
+  </section>
+
+  <!-- POR QUE CONSULTORIA -->
+  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: clamp(40px, 6vw, 80px); align-items: center;">
+    <div style="aspect-ratio: 4/5; overflow: hidden; max-width: 460px; margin: 0 auto; width: 100%;">
+      <img src="./assets/aline-portrait.png" alt="Retrato de Aline">
+    </div>
+    <div>
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">COERÊNCIA</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 28px;">Nem toda roupa bonita é a roupa certa.</h2>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Estilo não é seguir tendência &mdash; é entender quem você é. Uma peça só funciona quando conversa com sua personalidade, seu estilo de vida e seus objetivos.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">O impacto está nos detalhes: modelagem, caimento, tecidos, proporções, acessórios. Elegância não é cor neutra &mdash; é harmonia e intenção.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Por isso o trabalho começa no ser, nunca no vestir. Falar do guarda-roupa antes de entender como você se comunica e se posiciona é resolver o problema errado.</p>
+      </div>
     </div>
   </section>
 
@@ -238,24 +225,25 @@
           <p style="font-size: 15px; line-height: 1.75; color: var(--text-muted); margin: 0; font-weight: 300;">Só então olhamos o armário: o que falta, o que sai, e as combinações que resolvem seus dias com intenção.</p>
         </div>
       </div>
-      <div style="width: 100%; max-width: 620px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 40px;">
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(19px, 1.8vw, 24px); line-height: 1.6; color: var(--text); margin: 0;">O resultado não é um armário mais bonito. É uma mulher que se veste com intenção &mdash; com mais clareza, mais confiança, e uma imagem que comunica quem ela realmente é.</p>
+      <div style="width: 100%; max-width: 720px; margin: 0 auto; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 40px; text-align: center;">
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(19px, 1.8vw, 24px); line-height: 1.6; color: var(--text); margin: 0 0 32px;">O resultado não é um armário mais bonito. É uma mulher que se veste com intenção &mdash; com mais clareza, mais confiança, e uma imagem que comunica quem ela realmente é.</p>
+        <a href="#experiencias" class="btn">QUERO CONHECER AS EXPERIÊNCIAS DE CONSULTORIA</a>
       </div>
     </div>
   </section>
 
-  <!-- POR QUE CONSULTORIA -->
+  <!-- SOBRE / QUEM SOU -->
   <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: clamp(40px, 6vw, 80px); align-items: center;">
-    <div style="aspect-ratio: 4/5; overflow: hidden; max-width: 460px; margin: 0 auto; width: 100%;">
-      <img src="./assets/aline-portrait.png" alt="Retrato de Aline">
+    <div style="aspect-ratio: 4/5; overflow: hidden; max-width: 460px; margin: 0 auto; width: 100%; background: var(--panel);">
+      <img src="./assets/aline-sobre.png" alt="Aline Medeiros, consultora de imagem">
     </div>
     <div>
-      <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">COERÊNCIA, NÃO ESTILO</div>
-      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 28px;">Nem toda roupa bonita é a roupa certa.</h2>
+      <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">QUEM SOU</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 28px;">Prazer, eu sou Aline Medeiros.</h2>
       <div style="display: flex; flex-direction: column; gap: 20px;">
-        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Estilo não é seguir tendência &mdash; é entender quem você é. Uma peça só funciona quando conversa com sua personalidade, seu estilo de vida e seus objetivos.</p>
-        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">O impacto está nos detalhes: modelagem, caimento, tecidos, proporções, acessórios. Elegância não é cor neutra &mdash; é harmonia e intenção.</p>
-        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Por isso o trabalho começa no ser, nunca no vestir. Falar do guarda-roupa antes de entender como você se comunica e se posiciona é resolver o problema errado.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Sou consultora de imagem e acredito que vestir-se bem vai muito além de escolher roupas bonitas.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">Meu trabalho começa antes do guarda-roupa: começa na compreensão de quem você é, do momento que vive e da forma como deseja ser percebida.</p>
+        <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted); margin: 0; font-weight: 300;">A partir disso, construímos uma imagem coerente com sua identidade, sua rotina e seus objetivos.</p>
       </div>
     </div>
   </section>
@@ -285,137 +273,161 @@
     </div>
   </section>
 
-  <!-- PROVA SOCIAL -->
-  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 1280px; margin: 0 auto;">
-    <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px; text-align: center;">CLIENTES</div>
-    <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 clamp(44px, 8vw, 72px); text-align: center;">O que dizem depois do processo</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: clamp(32px, 6vw, 48px);">
-      <div style="border-top: 1px solid rgba(0,0,0,0.12); padding-top: 28px;">
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; margin: 0 0 20px; color: var(--text);">Eu tinha um guarda-roupa cheio e mesmo assim me sentia invisível nas reuniões. A Aline não me deu um &ldquo;estilo novo&rdquo; — ela me ajudou a parecer, finalmente, com quem eu me tornei. Hoje entro numa sala e não preciso provar nada antes de falar.</p>
-        <p style="font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); margin: 0; font-weight: 400;">CAMILA REZENDE · ADVOGADA SOCIETÁRIA</p>
+  <!-- EXPERIÊNCIAS / PLANOS -->
+  <section id="experiencias" style="background: linear-gradient(180deg, oklch(26% 0.03 55) 0%, oklch(21% 0.025 50) 100%); color: var(--bg); padding: clamp(72px, 14vw, 140px) 7vw; scroll-margin-top: 0;">
+    <div style="max-width: 1320px; margin: 0 auto;">
+    <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">EXPERIÊNCIAS</div>
+    <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(28px, 2.8vw, 40px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 clamp(44px, 8vw, 64px); max-width: 640px;">Minhas experiências de consultoria.</h2>
+
+    <div class="plans-grid">
+      <!-- 1 -->
+      <div class="plan">
+        <div class="plan-tag">pocket</div>
+        <h3 class="plan-title"><span>1.</span> Clareza de Imagem</h3>
+        <p class="plan-sub">Sua identidade traduzida em imagem.</p>
+        <p class="plan-desc">Você sai sabendo como deseja ser percebida e quais códigos visuais fazem sentido para você.</p>
+        <div class="plan-incl">Inclui</div>
+        <ul class="plan-list">
+          <li>Objetivos de imagem</li>
+          <li>Estilos pessoais</li>
+          <li>Arquitetura corporal</li>
+          <li>Direcionamento da identidade visual</li>
+          <li>Guia completo de identidade</li>
+        </ul>
       </div>
-      <div style="border-top: 1px solid rgba(0,0,0,0.12); padding-top: 28px;">
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; margin: 0 0 20px; color: var(--text);">O que mais me marcou foi ela começar pelas perguntas certas, não pelas roupas. Saí do processo comprando menos e usando tudo — e recebendo &ldquo;você está diferente&rdquo; toda semana. A diferença é que agora eu me reconheço no espelho.</p>
-        <p style="font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); margin: 0; font-weight: 400;">JULIANA MATTOS · FUNDADORA DE STARTUP</p>
+
+      <!-- 2 -->
+      <div class="plan">
+        <div class="plan-tag">pocket</div>
+        <h3 class="plan-title"><span>2.</span> Cores Estratégicas</h3>
+        <p class="plan-sub">Sua paleta. Suas escolhas.</p>
+        <p class="plan-desc">Descubra suas melhores cores e aprenda a utilizá-las de forma estratégica e intencional.</p>
+        <div class="plan-incl">Inclui</div>
+        <ul class="plan-list">
+          <li>Coloração pessoal</li>
+          <li>Cores de essência</li>
+          <li>Combinações de cores</li>
+          <li>Direcionamento e guia personalizado</li>
+        </ul>
       </div>
-      <div style="border-top: 1px solid rgba(0,0,0,0.12); padding-top: 28px;">
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; margin: 0 0 20px; color: var(--text);">Depois de vinte anos de carreira, achei que já sabia me vestir. A Aline me mostrou a distância entre a imagem que eu passava e a autoridade que eu já tinha. Foi o investimento mais estratégico que fiz em mim nos últimos anos.</p>
-        <p style="font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); margin: 0; font-weight: 400;">RENATA VILAÇA · DIRETORA EXECUTIVA</p>
+
+      <!-- 3 -->
+      <div class="plan">
+        <div class="plan-tag">completa</div>
+        <h3 class="plan-title"><span>3.</span> Consultoria de Imagem Completa</h3>
+        <p class="plan-sub">Da clareza à aplicação.</p>
+        <p class="plan-desc">Para mulheres que querem fazer o processo completo, construindo uma imagem coerente com quem são, sua rotina e seus objetivos.</p>
+        <div class="plan-incl">Inclui</div>
+        <ul class="plan-list">
+          <li>Objetivos de imagem</li>
+          <li>Estilos</li>
+          <li>Arquitetura corporal</li>
+          <li>Identidade visual</li>
+          <li>Guarda-roupa estratégico</li>
+          <li>Personal Shopper</li>
+          <li>Montagem de looks</li>
+          <li>Cuidados e seleção das peças</li>
+          <li>Guia personalizado</li>
+        </ul>
       </div>
+
+      <!-- 4 -->
+      <div class="plan">
+        <div class="plan-tag">experiências</div>
+        <h3 class="plan-title"><span>4.</span> Workshops, Palestras e Experiências</h3>
+        <p class="plan-sub">Imagem, comunicação e presença.</p>
+        <p class="plan-desc">Workshops, palestras e encontros desenvolvidos de acordo com os objetivos e o contexto de cada público. Para marcas, grupos e empresas.</p>
+        <div class="plan-incl">Possíveis temas</div>
+        <ul class="plan-list">
+          <li>Autoestima: Imagem, Comunicação e Presença</li>
+          <li>Estilo</li>
+          <li>Cores</li>
+          <li>Arquitetura Corporal</li>
+          <li>Guarda-roupa e Compras</li>
+          <li>Design &amp; Styling</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: clamp(44px, 7vw, 64px);">
+      <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20as%20experi%C3%AAncias%20de%20consultoria." target="_blank" rel="noopener" class="btn btn--light">AGENDAR MINHA CONVERSA</a>
+    </div>
     </div>
   </section>
 
-  <!-- FORMULÁRIO INTERATIVO -->
-  <section id="form" style="background: linear-gradient(180deg, oklch(26% 0.03 55) 0%, oklch(21% 0.025 50) 100%); color: var(--bg); padding: clamp(90px, 16vw, 150px) 7vw;">
-    <div style="max-width: 720px; margin: 0 auto 44px; text-align: center;">
-      <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 24px;">PRÓXIMO PASSO</div>
-      <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.3; letter-spacing: -0.008em; margin: 0 0 20px;">Todo processo começa com uma conversa.</h2>
-      <p style="font-size: 16px; line-height: 1.8; color: rgba(250,248,244,0.7); margin: 0; font-weight: 300;">Responda algumas perguntas rápidas &mdash; leva menos de um minuto e ajuda a Aline a entender seu momento antes da primeira conversa.</p>
-    </div>
+  <!-- FAQ -->
+  <section style="padding: clamp(72px, 14vw, 140px) 7vw; max-width: 860px; margin: 0 auto;">
+    <div style="font-size: 12px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">PERGUNTAS FREQUENTES</div>
+    <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(28px, 2.8vw, 40px); line-height: 1.35; letter-spacing: -0.008em; margin: 0 0 clamp(36px, 6vw, 52px);">Ainda com dúvidas? Talvez estejam aqui.</h2>
 
-    <div class="form-wrap">
-      <div class="form-card">
-        <!-- topo: progresso -->
-        <div class="form-topbar" id="form-topbar">
-          <div class="form-step-count"><b id="step-now">01</b> / <span id="step-total">05</span></div>
-          <div class="form-progress" role="progressbar" aria-label="Progresso do formulário" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1" id="progress-wrap"><div class="form-progress-bar" id="progress-bar"></div></div>
-        </div>
+    <div>
+      <details class="faq-item">
+        <summary>O atendimento é presencial ou online?</summary>
+        <div class="faq-answer"><p>Os dois. O atendimento presencial acontece em São Paulo e região, e o online atende mulheres de qualquer lugar. Na conversa inicial definimos juntas o formato que faz mais sentido para o seu momento.</p></div>
+      </details>
 
-        <form id="lead-form" novalidate>
-          <!-- honeypot anti-spam (invisível a humanos) -->
-          <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
-          <!-- Etapa 1: Nome -->
-          <div class="form-step active" data-step="1">
-            <h3 class="form-q">Como você se chama?</h3>
-            <p class="form-help">Vamos começar pelo básico.</p>
-            <label class="form-field">
-              <input type="text" class="form-input" name="nome" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome" required>
-            </label>
-          </div>
+      <details class="faq-item">
+        <summary>Quanto tempo dura o processo?</summary>
+        <div class="faq-answer"><p>Depende da experiência escolhida. As consultorias pontuais são mais rápidas, enquanto a Consultoria de Imagem Completa é um processo mais aprofundado, conduzido em etapas. Tudo é adaptado à sua rotina.</p></div>
+      </details>
 
-          <!-- Etapa 2: Momento -->
-          <div class="form-step" data-step="2">
-            <h3 class="form-q">Qual seu momento agora?</h3>
-            <p class="form-help">Escolha o que mais se aproxima.</p>
-            <div class="form-options" data-choice="momento">
-              <button type="button" class="opt"><span class="opt-dot"></span>Transição de carreira ou de vida</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Alcancei um novo patamar profissional</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Quero mais coerência na minha imagem</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Um evento ou fase específica</button>
-            </div>
-          </div>
+      <details class="faq-item">
+        <summary>Preciso comprar roupas novas?</summary>
+        <div class="faq-answer"><p>Não. O trabalho começa entendendo quem você é e o que já faz sentido no seu guarda-roupa. Se houver compras, elas são estratégicas e intencionais — nunca por impulso ou tendência.</p></div>
+      </details>
 
-          <!-- Etapa 3: Dor -->
-          <div class="form-step" data-step="3">
-            <h3 class="form-q">O que mais pesa hoje?</h3>
-            <p class="form-help">O que te trouxe até aqui.</p>
-            <div class="form-options" data-choice="dor">
-              <button type="button" class="opt"><span class="opt-dot"></span>Minha imagem não reflete quem eu sou</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Insegurança na hora de me vestir</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Guarda-roupa cheio, mas sem direção</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Quero comunicar mais autoridade</button>
-            </div>
-          </div>
-
-          <!-- Etapa 4: Preferência -->
-          <div class="form-step" data-step="4">
-            <h3 class="form-q">Como prefere o atendimento?</h3>
-            <p class="form-help">Aline atende presencial e online.</p>
-            <div class="form-options" data-choice="atendimento">
-              <button type="button" class="opt"><span class="opt-dot"></span>Presencial</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Online</button>
-              <button type="button" class="opt"><span class="opt-dot"></span>Tanto faz</button>
-            </div>
-          </div>
-
-          <!-- Etapa 5: Contato -->
-          <div class="form-step" data-step="5">
-            <h3 class="form-q">Por onde a Aline te encontra?</h3>
-            <p class="form-help">Deixe seu melhor contato e, se quiser, um recado.</p>
-            <label class="form-field" style="margin-bottom:12px;">
-              <input type="text" class="form-input" name="contato" placeholder="WhatsApp ou e-mail" autocomplete="on" aria-label="Seu WhatsApp ou e-mail" required>
-            </label>
-            <p class="form-hint" id="contato-hint">Informe um e-mail válido ou um telefone com DDD.</p>
-            <label class="form-field">
-              <textarea class="form-textarea" name="mensagem" placeholder="Quer contar mais alguma coisa? (opcional)" aria-label="Recado (opcional)"></textarea>
-            </label>
-          </div>
-
-          <!-- navegação -->
-          <p class="form-error" id="form-error" role="alert">Não consegui enviar agora. Tente novamente ou fale direto no WhatsApp.</p>
-          <div class="form-nav">
-            <button type="button" class="form-btn form-btn--ghost form-btn--hidden" id="btn-back">Voltar</button>
-            <button type="button" class="form-btn form-btn--primary" id="btn-next" disabled>Continuar</button>
-          </div>
-        </form>
-
-        <!-- sucesso -->
-        <div class="form-success" id="form-success" role="status" aria-live="polite">
-          <div class="form-check">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-          </div>
-          <h3 class="form-q" style="margin-bottom:14px;">Recebido, <span id="success-name">tudo certo</span>!</h3>
-          <p class="form-help" style="margin-bottom:26px;">Suas respostas foram registradas. Em breve a Aline entra em contato para dar o próximo passo.</p>
-          <div class="review-line" id="review"></div>
-        </div>
-      </div>
+      <details class="faq-item">
+        <summary>Como funciona o primeiro passo?</summary>
+        <div class="faq-answer"><p>Simples: você agenda uma conversa pelo WhatsApp. Nela entendemos o seu momento, seus objetivos e qual experiência combina com você — sem compromisso e sem pressão.</p></div>
+      </details>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer style="padding: 56px 7vw 96px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 32px; max-width: 1280px; margin: 0 auto; border-top: 1px solid rgba(0,0,0,0.08);">
-    <div>
-      <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 6px;">Aline Medeiros</div>
-      <div style="font-size: 12px; letter-spacing: 0.08em; color: var(--text-muted);">CONSULTORIA DE IMAGEM</div>
+  <footer style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 10vw, 96px) 7vw 36px; border-top: 1px solid rgba(0,0,0,0.1);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: clamp(36px, 6vw, 72px);">
+      <!-- marca -->
+      <div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1.1; margin-bottom: 10px;">Aline Medeiros</div>
+        <div style="font-size: 11px; letter-spacing: 0.16em; color: var(--accent); font-weight: 500; margin-bottom: 20px;">CONSULTORIA DE IMAGEM</div>
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; line-height: 1.5; color: var(--text-muted); margin: 0; max-width: 240px;">A imagem começa no ser.</p>
+      </div>
+
+      <!-- contato -->
+      <div>
+        <div style="font-size: 11px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 18px;">CONTATO</div>
+        <div style="display: flex; flex-direction: column; gap: 13px;">
+          <a href="mailto:contatoaline.consultoria@gmail.com" class="foot-link" aria-label="E-mail">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6 9-6"/></svg>
+            contatoaline.consultoria@gmail.com
+          </a>
+          <div class="foot-link" style="align-items: flex-start;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 2px;"><path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>São Paulo e região<br>Atendimento presencial e online</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- redes -->
+      <div>
+        <div style="font-size: 11px; letter-spacing: 0.18em; color: var(--accent); font-weight: 500; margin-bottom: 18px;">REDES</div>
+        <div style="display: flex; flex-direction: column; gap: 13px;">
+          <a href="https://www.instagram.com/alinemedeirosconsultoria" target="_blank" rel="noopener" class="foot-link" aria-label="Instagram @alinemedeirosconsultoria">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+            @alinemedeirosconsultoria
+          </a>
+          <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" class="foot-link" aria-label="WhatsApp">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.35a9.96 9.96 0 0 0 4.91 1.29h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.15h-.01a8.15 8.15 0 0 1-4.15-1.14l-.3-.18-3.05.8.82-2.97-.2-.31a8.14 8.14 0 0 1-1.25-4.35c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 0 1 2.39 5.78c0 4.5-3.67 8.14-8.18 8.14zm4.47-6.1c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.97-.14.16-.28.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.35-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14-.01-.3-.01-.46-.01s-.42.06-.64.3c-.22.24-.85.83-.85 2.02s.87 2.35 1 2.51c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
     </div>
-    <div style="font-size: 14px; line-height: 2; color: var(--text-muted); font-weight: 300;">
-      <div>Atendimento presencial em [cidade] e online</div>
-      <div>[e-mail]</div>
-      <div><a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" class="link-muted">WhatsApp</a></div>
-    </div>
-    <div style="font-size: 14px; line-height: 2; color: var(--text-muted); font-weight: 300;">
-      <div><a href="#" class="link-muted">Instagram</a></div>
-      <div style="margin-top: 16px; font-size: 12px;">&copy; 2026 Aline Medeiros. Todos os direitos reservados.</div>
+
+    <!-- barra inferior -->
+    <div style="margin-top: clamp(40px, 6vw, 56px); padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; align-items: center;">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 300;">&copy; 2026 Aline Medeiros. Todos os direitos reservados.</div>
+      <div style="font-size: 12px; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 300;">Consultoria de Imagem &middot; São Paulo</div>
     </div>
   </footer>
 
@@ -423,183 +435,6 @@
   <a href="https://wa.me/5511966296161?text=Ol%C3%A1%20Aline%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20consultoria%20de%20imagem." target="_blank" rel="noopener" aria-label="Falar com Aline no WhatsApp" class="wa-sticky">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink: 0;"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.35a9.96 9.96 0 0 0 4.91 1.29h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.15h-.01a8.15 8.15 0 0 1-4.15-1.14l-.3-.18-3.05.8.82-2.97-.2-.31a8.14 8.14 0 0 1-1.25-4.35c0-4.5 3.66-8.16 8.16-8.16 2.18 0 4.23.85 5.77 2.39a8.1 8.1 0 0 1 2.39 5.78c0 4.5-3.67 8.14-8.18 8.14zm4.47-6.1c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.97-.14.16-.28.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.35-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14-.01-.3-.01-.46-.01s-.42.06-.64.3c-.22.24-.85.83-.85 2.02s.87 2.35 1 2.51c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
   </a>
-
-  <script>
-  (function () {
-    var form = document.getElementById('lead-form');
-    if (!form) return;
-
-    var steps = Array.prototype.slice.call(form.querySelectorAll('.form-step'));
-    var total = steps.length;
-    var current = 0;
-    var data = {};
-
-    var ENDPOINT = 'https://api.web3forms.com/submit';
-    var ACCESS_KEY = '446ec470-46ab-4858-bb23-19ba7763eeb5';
-
-    var btnNext = document.getElementById('btn-next');
-    var btnBack = document.getElementById('btn-back');
-    var bar = document.getElementById('progress-bar');
-    var progressWrap = document.getElementById('progress-wrap');
-    var stepNow = document.getElementById('step-now');
-    document.getElementById('step-total').textContent = String(total).padStart(2, '0');
-    var success = document.getElementById('form-success');
-    var topbar = document.getElementById('form-topbar');
-    var errorBox = document.getElementById('form-error');
-    var contatoHint = document.getElementById('contato-hint');
-    var sending = false;
-
-    var LABELS = { momento: 'Momento', dor: 'O que pesa', atendimento: 'Atendimento', contato: 'Contato', mensagem: 'Recado' };
-
-    function isValidContato(v) {
-      v = (v || '').trim();
-      var email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      var digits = v.replace(/\D/g, '');
-      return email.test(v) || digits.length >= 8; // e-mail OU telefone plausível
-    }
-
-    function stepIsValid(i) {
-      var step = steps[i];
-      var choice = step.querySelector('.form-options');
-      if (choice) return !!data[choice.getAttribute('data-choice')];
-      var req = step.querySelector('[required]');
-      if (!req) return true;
-      if (req.name === 'contato') return isValidContato(req.value);
-      return req.value.trim().length > 0;
-    }
-
-    function render(focusInput) {
-      steps.forEach(function (s, i) { s.classList.toggle('active', i === current); });
-      bar.style.width = ((current + 1) / total * 100) + '%';
-      stepNow.textContent = String(current + 1).padStart(2, '0');
-      if (progressWrap) progressWrap.setAttribute('aria-valuenow', current + 1);
-      btnBack.classList.toggle('form-btn--hidden', current === 0);
-      btnNext.textContent = current === total - 1 ? 'Enviar' : 'Continuar';
-      btnNext.disabled = !stepIsValid(current);
-      errorBox.classList.remove('show');
-      if (focusInput) {
-        var input = steps[current].querySelector('input, textarea');
-        if (input) setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }, 60);
-      }
-    }
-
-    // seleção de cards
-    form.querySelectorAll('.form-options').forEach(function (group) {
-      var key = group.getAttribute('data-choice');
-      group.querySelectorAll('.opt').forEach(function (opt) {
-        opt.addEventListener('click', function () {
-          group.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('selected'); });
-          opt.classList.add('selected');
-          data[key] = opt.textContent.trim();
-          btnNext.disabled = false;
-          setTimeout(next, 260); // auto-avança
-        });
-      });
-    });
-
-    // inputs de texto habilitam o botão
-    form.querySelectorAll('input, textarea').forEach(function (el) {
-      el.addEventListener('input', function () {
-        btnNext.disabled = !stepIsValid(current);
-        if (el.name === 'contato') {
-          var v = el.value.trim();
-          contatoHint.classList.toggle('show', v.length > 0 && !isValidContato(v));
-        }
-      });
-      el.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') { e.preventDefault(); if (!btnNext.disabled) next(); }
-      });
-    });
-
-    function collectText() {
-      var step = steps[current];
-      step.querySelectorAll('input, textarea').forEach(function (el) {
-        if (el.name) data[el.name] = el.value.trim();
-      });
-    }
-
-    function next() {
-      if (!stepIsValid(current)) return;
-      collectText();
-      if (current < total - 1) { current++; render(true); }
-      else submit();
-    }
-
-    function back() { if (current > 0) { current--; render(true); } }
-
-    function setSending(on) {
-      sending = on;
-      btnNext.disabled = on;
-      btnBack.style.visibility = on ? 'hidden' : '';
-      btnNext.textContent = on ? 'Enviando…' : 'Enviar';
-    }
-
-    function esc(s) {
-      return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; });
-    }
-
-    function showSuccess() {
-      form.style.display = 'none';
-      topbar.style.display = 'none';
-      document.getElementById('success-name').textContent = data.nome || 'tudo certo';
-      var order = ['momento', 'dor', 'atendimento', 'contato', 'mensagem'];
-      var html = order.filter(function (k) { return data[k]; }).map(function (k) {
-        return '<div><b>' + LABELS[k] + ':</b> ' + esc(data[k]) + '</div>';
-      }).join('');
-      document.getElementById('review').innerHTML = html;
-      success.classList.add('active');
-    }
-
-    function submit() {
-      if (sending) return;
-      collectText();
-
-      // honeypot preenchido = robô: finge sucesso e não envia
-      var hp = form.querySelector('[name="_hp"]');
-      if (hp && hp.value) { showSuccess(); return; }
-
-      if (!isValidContato(data.contato || '')) {
-        current = total - 1; render(true);
-        contatoHint.classList.add('show');
-        return;
-      }
-
-      errorBox.classList.remove('show');
-      setSending(true);
-
-      var payload = {
-        access_key: ACCESS_KEY,
-        subject: 'Novo lead do site — ' + (data.nome || 'sem nome'),
-        from_name: 'Site Aline Medeiros',
-        nome: data.nome || '',
-        momento: data.momento || '',
-        o_que_pesa: data.dor || '',
-        atendimento: data.atendimento || '',
-        contato: data.contato || '',
-        mensagem: data.mensagem || '(sem recado)'
-      };
-
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then(function (res) { return res.json(); })
-        .then(function (out) {
-          if (out && out.success) { showSuccess(); }
-          else { throw new Error((out && out.message) || 'Falha no envio'); }
-        })
-        .catch(function () {
-          setSending(false);
-          errorBox.classList.add('show');
-        });
-    }
-
-    btnNext.addEventListener('click', next);
-    btnBack.addEventListener('click', back);
-    render();
-  })();
-  </script>
 
 </body>
 </html>
